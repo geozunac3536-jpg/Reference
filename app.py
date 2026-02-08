@@ -1,4 +1,4 @@
-# Referimport streamlit as st
+import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from gtts import gTTS
@@ -16,7 +16,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # SIDEBAR: FOLIOS DE INVESTIGACIÓN
-st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Sat_logo.svg/1200px-Sat_logo.svg.png", width=100)
+# Usamos una imagen genérica o texto si la URL falla
 st.sidebar.markdown("### EXPEDIENTES ACTIVOS")
 st.sidebar.error("**SAT (Evasión Fiscal):**\nFolio: 1B4403D2BE65EB17")
 st.sidebar.warning("**WALMART ETHICS:**\nFolio: WMT260203209")
@@ -75,10 +75,13 @@ st.markdown(f"""
 
 # GENERADOR DE AUDIO
 if st.button('🔊 ESCUCHAR ADVERTENCIA LEGAL'):
-    tts = gTTS(mensaje_voz, lang='es', tld='com.mx') # Acento mexicano
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-        tts.save(fp.name)
-        st.audio(fp.name, format="audio/mp3")
+    try:
+        tts = gTTS(mensaje_voz, lang='es', tld='com.mx') # Acento mexicano
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+            tts.save(fp.name)
+            st.audio(fp.name, format="audio/mp3")
+    except Exception as e:
+        st.error(f"Error al generar audio: {e}")
 
 # PIE DE PÁGINA
 st.divider()
