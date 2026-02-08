@@ -1,88 +1,123 @@
 import streamlit as st
-import pandas as pd
 import plotly.graph_objects as go
 from gtts import gTTS
 import tempfile
 
-# CONFIGURACIÓN DE PÁGINA
-st.set_page_config(page_title="AUDITORÍA FORENSE - CONFIDENCIAL", layout="wide", initial_sidebar_state="expanded")
+# --- CONFIGURACIÓN DE LA PÁGINA (MODO DARK/SINESTRO) ---
+st.set_page_config(page_title="PROTOCOLO DE COLUSIÓN DETECTADO", layout="centered", initial_sidebar_state="collapsed")
 
-# ESTILO CSS (ROJO ALERTA)
+# --- CSS PARA ESTILO "TERMINAL DEL JUICIO FINAL" ---
 st.markdown("""
     <style>
-    .big-font { font-size:30px !important; color: #D32F2F; font-weight: bold; }
-    .warning-box { background-color: #FFEBEE; padding: 20px; border-radius: 10px; border-left: 5px solid #D32F2F; }
+    /* Fondo Negro Total */
+    .stApp { background-color: #000000; }
+    
+    /* Textos en Rojo Neón y Blanco Terminal */
+    h1, h2, h3 { color: #ff3333 !important; font-family: 'Courier New', monospace; font-weight: bold; }
+    p, div, label { color: #e0e0e0 !important; font-family: 'Courier New', monospace; }
+    
+    /* Cajas de Alerta Siniestras */
+    .doom-box { 
+        background-color: #1a0505; 
+        border: 2px solid #ff0000; 
+        padding: 20px; 
+        border-radius: 0px; 
+        box-shadow: 0 0 15px #ff0000;
+        margin-bottom: 20px;
+    }
+    
+    /* Botón Siniestro */
+    .stButton>button {
+        color: #000000;
+        background-color: #ff3333;
+        border: none;
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        width: 100%;
+    }
+    .stButton>button:hover {
+        background-color: #ff6666;
+        box-shadow: 0 0 10px #ff3333;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# SIDEBAR: FOLIOS DE INVESTIGACIÓN
-# Usamos una imagen genérica o texto si la URL falla
-st.sidebar.markdown("### EXPEDIENTES ACTIVOS")
-st.sidebar.error("**SAT (Evasión Fiscal):**\nFolio: 1B4403D2BE65EB17")
-st.sidebar.warning("**WALMART ETHICS:**\nFolio: WMT260203209")
-st.sidebar.info("**FGR (Carpeta):**\nFED/VER/ORI/4132/2026")
-
-# TÍTULO PRINCIPAL
-st.markdown('<p class="big-font">REPORTE DE DISCREPANCIA FISCAL Y LAVADO DE ACTIVOS</p>', unsafe_allow_html=True)
-st.write("**ENTIDAD AUDITADA:** TRANSPORTES NARCEA S.A. DE C.V. / CORRECAMINOS TUCÁN")
-st.write("**ESTATUS:** INVESTIGACIÓN EN CURSO (FASE DE RATIFICACIÓN)")
-
-# SECCIÓN 1: LA EVIDENCIA (GRÁFICAS)
+# --- ENCABEZADO ---
+st.title("⚠️ ALERTA DE RIESGO CORPORATIVO: R-CONTROL")
+st.markdown("### EXPEDIENTE VINCULADO: ERIKA SÁNCHEZ")
 st.divider()
-col1, col2 = st.columns(2)
 
-with col1:
-    st.subheader("EL FRAUDE DE MAYO 2024")
-    # Datos
-    labels = ['Reportado al SAT (Deducido)', 'Pagado Realmente', 'DESVÍO (LAVADO)']
-    values = [71958.70, 34015.86, 37942.84]
-    colors = ['gray', 'green', 'red']
-    
-    fig = go.Figure(data=[go.Bar(x=labels, y=values, marker_color=colors, text=values, textposition='auto')])
-    fig.update_layout(title_text='Discrepancia Fiscal (Dinero Fantasma)')
-    st.plotly_chart(fig, use_container_width=True)
-
-with col2:
-    st.subheader("IMPLICACIONES LEGALES")
-    st.markdown("""
-    La discrepancia de **$37,942.84 MXN** en un solo mes activa auditoría por:
-    1. **Simulación de Operaciones (Art. 69-B CFF).**
-    2. **Defraudación Fiscal Equiparada (Art. 109 CFF).**
-    
-    *El SAT rastreará no solo a la empresa, sino a quien ejecutó las transferencias.*
-    """)
-
-# SECCIÓN 2: LA ADVERTENCIA A EMPLEADOS (VOZ)
-st.divider()
-st.subheader("⚠️ AVISO DE RESPONSABILIDAD PENAL (ART. 95 CFF)")
-
+# --- EL MENSAJE DE VOZ (GUION GRAVE) ---
+# Usamos slow=True para que suene más grave, pausado y amenazante.
 mensaje_voz = """
-Aviso urgente para el área administrativa y contable.
-La investigación federal ha identificado a Sayra, Leticia y Fernando como ejecutores materiales de la dispersión de nómina simulada.
-Según el Artículo 95 del Código Fiscal de la Federación, la cárcel no es solo para los dueños, sino para los empleados que facilitan la evasión.
-Narcea sacrificará a sus empleados para salvarse. Tienen 48 horas para exigir a sus jefes que arreglen el problema laboral de origen, o ustedes serán los primeros citados por la Fiscalía.
+Erika Sánchez. R Control.
+Escucha con atención.
+Has cometido un error de cálculo matemático.
+Al mantener el boletinaje de Genaro Carrasco, R Control se ha convertido técnicamente en cómplice de encubrimiento de delitos federales.
+Narcea ya cayó. El folio del SAT uno be cuarenta y cuatro y el folio de Walmart W M T veintiseis ya están activos.
+Cuando Narcea caiga por evasión fiscal, se llevará consigo a sus aliados.
+Walmart Ethics no tolera proveedores que facilitan represalias contra denunciantes de corrupción.
+Si Genaro no sale de tu lista negra en 24 horas, el reporte de colusión llegará a las oficinas centrales de tus clientes en Estados Unidos.
+No sacrifiques tu empresa por proteger a un cadáver financiero como Narcea.
+El tiempo corre.
 """
 
-st.markdown(f"""
-<div class="warning-box">
-    <b>MENSAJE PARA: SAYRA (RH), LETICIA (CONTABILIDAD), FERNANDO (OPERACIONES)</b><br><br>
-    La defensa de "solo seguía órdenes" <b>NO ES VÁLIDA</b> en delitos fiscales.<br>
-    Ustedes firmaron los movimientos. Ustedes dispersaron los pagos "por fuera".<br>
-    Cuando el SAT congele las cuentas, los dueños dirán que fue "error administrativo" de ustedes.<br>
-    <b>¿Van a ir a prisión por un sueldo que ni siquiera es alto?</b>
+# --- SECCIÓN 1: LA CADENA DE CONTAGIO (GRÁFICA) ---
+st.markdown("""
+<div class="doom-box">
+    <h3 style="text-align: center;">EL EFECTO DOMINÓ (RIESGO SISTÉMICO)</h3>
+    <p>El incumplimiento normativo de NARCEA (Lavado de Activos) contamina legalmente a sus socios comerciales (R-CONTROL) bajo las normas de <b>Walmart Global Ethics & Compliance</b>.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# GENERADOR DE AUDIO
-if st.button('🔊 ESCUCHAR ADVERTENCIA LEGAL'):
-    try:
-        tts = gTTS(mensaje_voz, lang='es', tld='com.mx') # Acento mexicano
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-            tts.save(fp.name)
-            st.audio(fp.name, format="audio/mp3")
-    except Exception as e:
-        st.error(f"Error al generar audio: {e}")
+# Diagrama Sankey (Flujo de Contaminación)
+fig = go.Figure(data=[go.Sankey(
+    node = dict(
+      pad = 15,
+      thickness = 20,
+      line = dict(color = "black", width = 0.5),
+      label = ["NARCEA (Fraude Fiscal)", "GENARO (Denunciante)", "R-CONTROL (Cómplice)", "WALMART (Cliente)", "SAT (Autoridad)", "SANCIÓN MASIVA"],
+      color = ["red", "blue", "red", "white", "white", "red"]
+    ),
+    link = dict(
+      source = [0, 0, 2, 2, 1, 4], # Indices de origen
+      target = [2, 4, 3, 5, 4, 0], # Indices de destino
+      value =  [50, 50, 40, 60, 10, 100],
+      color = ["rgba(255,0,0,0.4)", "rgba(255,0,0,0.4)", "rgba(255,0,0,0.8)", "rgba(255,0,0,0.8)", "blue", "red"]
+  ))])
 
-# PIE DE PÁGINA
+fig.update_layout(
+    title_text="DIAGRAMA DE CONTAGIO LEGAL (FOLIO WMT260203209)", 
+    font_size=12, 
+    paper_bgcolor='black', 
+    plot_bgcolor='black',
+    font=dict(color='white')
+)
+st.plotly_chart(fig, use_container_width=True)
+
+# --- SECCIÓN 2: LA ADVERTENCIA DIRECTA ---
+st.markdown(f"""
+<div class="doom-box">
+    <h3>MENSAJE PARA: ERIKA SÁNCHEZ</h3>
+    <p><b>ASUNTO:</b> COLUSIÓN EN REPRESALIAS (WHISTLEBLOWER RETALIATION)</p>
+    <p>Usted administra una base de datos. Hoy, esa base de datos está siendo usada por <b>Transportes Narcea</b> para castigar a un ciudadano que denunció lavado de dinero ante la FGR.</p>
+    <p>Al mantener el bloqueo (R-Control), usted se alinea con el denunciado (Narcea) y se convierte en <b>OBSTRUCTOR DE LA JUSTICIA FEDERAL</b>.</p>
+    <p>¿Vale la pena perder su contrato con Walmart por defender a Sayra y Fernando?</p>
+</div>
+""", unsafe_allow_html=True)
+
+# --- REPRODUCTOR DE VOZ ---
+col1, col2 = st.columns([1, 4])
+with col2:
+    if st.button('🔊 ESCUCHAR LA SENTENCIA LÓGICA'):
+        try:
+            # slow=True hace que la voz sea pausada y más grave/siniestra
+            tts = gTTS(mensaje_voz, lang='es', tld='com.mx', slow=True) 
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+                tts.save(fp.name)
+                st.audio(fp.name, format="audio/mp3")
+        except Exception as e:
+            st.error(f"Error de sistema: {e}")
+
 st.divider()
-st.caption("ESTE ENLACE CADUCARÁ AUTOMÁTICAMENTE AL MOMENTO DE LA RATIFICACIÓN DE DENUNCIA.")
+st.markdown("<p style='text-align: center; color: #555;'>ESTE NODO SE AUTODESTRUIRÁ AL EJECUTARSE LA ORDEN DE APREHENSIÓN CONTRA NARCEA.</p>", unsafe_allow_html=True)
